@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29613.14
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MathParser", "MathParser\MathParser.csproj", "{CF06049D-E73B-4F72-9218-FB8C83E4DCF9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EgorLucky.MathParser", "MathParser\EgorLucky.MathParser.csproj", "{CF06049D-E73B-4F72-9218-FB8C83E4DCF9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
