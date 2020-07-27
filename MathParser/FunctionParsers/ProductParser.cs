@@ -1,10 +1,9 @@
-﻿using MathParserClasses;
-using MathParserClasses.Functions;
+﻿using EgorLucky.MathParser.Functions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace MathParser.FunctionParsers
+namespace EgorLucky.MathParser.FunctionParsers
 {
     public class ProductParser: IFunctionParser
     {
@@ -19,12 +18,6 @@ namespace MathParser.FunctionParsers
 
         public MathTryParseResult TryParse(string expression, ICollection<Variable> variables = null)
         {
-            //Console.WriteLine("ProductFactory "+expression);
-
-            //if (Validate.IsExpressionInBrackets(expression))
-            //    expression = expression.Remove(expression.Length - 1, 1)
-            //                            .Remove(0, 1);
-
             var result = new Product();
             var balance = 0;
             var factor = "";
@@ -53,6 +46,9 @@ namespace MathParser.FunctionParsers
                     if (!parseResult.IsSuccessfulCreated)
                         return parseResult;
 
+                    if(parseResult.Function.GetType() == typeof(Sum) && !Validate.IsExpressionInBrackets(factor))
+                        return mathTryParseResult;
+
                     result.Factors.Add(parseResult.Function);
                     factor = "";
                     continue;
@@ -67,6 +63,10 @@ namespace MathParser.FunctionParsers
                     var parseResult = _mathParser.TryParse(factor, variables);
                     if (!parseResult.IsSuccessfulCreated)
                         return parseResult;
+
+                    if (parseResult.Function.GetType() == typeof(Sum) && !Validate.IsExpressionInBrackets(factor))
+                        return mathTryParseResult;
+
                     result.Factors.Add(parseResult.Function);
                     continue;
                 }

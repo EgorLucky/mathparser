@@ -1,4 +1,4 @@
-﻿namespace MathParser
+﻿namespace EgorLucky.MathParser
 {
     public class MathTryParseResult
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MathParser.Constants
+namespace EgorLucky.MathParser.Constants
 {
     public class PI : IConst
     {

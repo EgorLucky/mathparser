@@ -8,3 +8,5 @@ MathParser/.vscode/*
 .vscode/tasks.json
 .vs/
 release/
+Tests/bin/
+Tests/obj/

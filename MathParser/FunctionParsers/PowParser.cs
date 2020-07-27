@@ -1,10 +1,10 @@
-﻿using MathParserClasses;
-using MathParserClasses.Functions;
+﻿using EgorLucky.MathParser.Functions;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
-namespace MathParser.FunctionParsers
+namespace EgorLucky.MathParser.FunctionParsers
 {
     public class PowParser : IFunctionParser
     {
@@ -45,9 +45,19 @@ namespace MathParser.FunctionParsers
                         if (!baseParseResult.IsSuccessfulCreated)
                             return baseParseResult;
 
+                        var types = new Type[] { typeof(Sum), typeof(Product)};
+
+                        if (types.Contains(baseParseResult.Function.GetType()) &&
+                            !Validate.IsExpressionInBrackets(@base))
+                            return baseParseResult;
+
                         var logParseResult = _mathParser.TryParse(log, variables);
                         if (!logParseResult.IsSuccessfulCreated)
                             return logParseResult;
+
+                        if (types.Contains(logParseResult.Function.GetType()) &&
+                            !Validate.IsExpressionInBrackets(log))
+                            return baseParseResult;
 
                         mathTryParseResult.IsSuccessfulCreated = true;
                         mathTryParseResult.ErrorMessage = "";

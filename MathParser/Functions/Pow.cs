@@ -1,11 +1,11 @@
-﻿using MathParser;
+﻿using EgorLucky.MathParser;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MathParserClasses.Functions
+namespace EgorLucky.MathParser.Functions
 {
     public class Pow : IFunction
     {

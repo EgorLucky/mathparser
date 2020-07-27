@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace MathParser
+namespace EgorLucky.MathParser
 {
     public static class Validate
     {

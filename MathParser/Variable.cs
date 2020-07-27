@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace MathParser
+namespace EgorLucky.MathParser
 {
     public class Variable : IFunction
     {

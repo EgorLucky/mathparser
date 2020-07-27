@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace MathParser
+namespace EgorLucky.MathParser
 {
     public interface IFunctionParser :IMathParserEntity
     {

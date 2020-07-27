@@ -1,6 +1,6 @@
-﻿using MathParser;
-using MathParser.Constants;
-using MathParser.FunctionParsers;
+﻿using EgorLucky.MathParser;
+using EgorLucky.MathParser.Constants;
+using EgorLucky.MathParser.FunctionParsers;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace MathParser
+namespace EgorLucky.MathParser
 {
     public class MathParser
     {
@@ -31,6 +31,7 @@ namespace MathParser
             _functionParsers.Add(new ExpParser(this));
             _functionParsers.Add(new SumParser(this));
             _functionParsers.Add(new ProductParser(this));
+            _functionParsers.Add(new LogParser(this));
             _numberFactory = new NumberParser();
             _functionParsers.Add(_numberFactory);
 
@@ -52,11 +53,18 @@ namespace MathParser
         public MathTryParseResult TryParse(string mathExpression, ICollection<Variable> variables = null)
         {
             //форматирование строки
-            Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture("ru-RU");
-            mathExpression = mathExpression.Replace(" ", "")
-                                           .Replace('.', ',');
+            mathExpression = mathExpression.Replace(" ", "");
             if (!mathExpression.Contains("+-1*"))
-                mathExpression = mathExpression.Replace("-", "+-1*");
+            {
+                if(mathExpression.StartsWith("-1*"))
+                {
+                    var subMathExpression = mathExpression.Substring(3);
+                    subMathExpression = subMathExpression.Replace("-", "+-1*");
+                    mathExpression = "-1*" + subMathExpression;
+                }
+                else if(mathExpression != "-1")
+                        mathExpression = mathExpression.Replace("-", "+-1*");
+            }
 
             var matchedName = string.Empty;
             
@@ -82,7 +90,7 @@ namespace MathParser
                     ErrorMessage = "brackets are not balanced"
                 };
 
-            if (Validate.IsExpressionInBrackets(mathExpression))
+            while (Validate.IsExpressionInBrackets(mathExpression))
                 mathExpression = mathExpression.Remove(mathExpression.Length - 1, 1)
                                         .Remove(0, 1);
 
@@ -93,22 +101,17 @@ namespace MathParser
 
         private MathTryParseResult TryParseFunction(string expression, ICollection<Variable> variables)
         {
-
-            var functionParsersResults  =_functionParsers
-                            .Select(f => new 
-                            { 
-                                    factory = f, 
-                                    result = f.TryParse(expression, variables) 
-                            })
-                            .Where(f => f.result.IsSuccessfulCreated)
-                            .OrderBy(f => f.factory.GetType() != typeof(SumParser))
-                            .ThenByDescending(f => f.factory.Name.Length)
-                            .ToList();
-
-            if (functionParsersResults.Count() > 0)
+            foreach(var functionParser in _functionParsers
+                                        .OrderBy(f => f.GetType() != typeof(SumParser))
+                                        .ThenBy(f => f.GetType() != typeof(ProductParser))
+                                        .ThenByDescending(f => f.Name.Length)
+                                        .ToList())
             {
-                var result = functionParsersResults.Select(f => f.result).FirstOrDefault();
-                return result;
+                var parseResult = functionParser.TryParse(expression, variables);
+                if(parseResult.IsSuccessfulCreated)
+                {
+                    return parseResult;
+                }
             }
 
             var matchedConstant = _constants

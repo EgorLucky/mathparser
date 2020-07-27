@@ -1,9 +1,10 @@
-﻿using MathParser.Functions;
+﻿using EgorLucky.MathParser.Functions;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
-namespace MathParser.FunctionParsers
+namespace EgorLucky.MathParser.FunctionParsers
 {
     public class FractionParser : IFunctionParser
     {
@@ -48,6 +49,16 @@ namespace MathParser.FunctionParsers
                         var denominatorParseResult = _mathParser.TryParse(denominator, variables);
                         if (!denominatorParseResult.IsSuccessfulCreated)
                             return denominatorParseResult;
+
+                        var types = new Type[] { typeof(Sum), typeof(Product) };
+                        if (types.Contains(numeratorParseResult.Function.GetType()) &&
+                            !Validate.IsExpressionInBrackets(numerator))
+                            return mathTryParseResult;
+
+                        if (types.Contains(denominatorParseResult.Function.GetType()) &&
+                            !Validate.IsExpressionInBrackets(denominator))
+                            return mathTryParseResult;
+
 
                         mathTryParseResult.IsSuccessfulCreated = true;
                         mathTryParseResult.ErrorMessage = "";

@@ -1,9 +1,9 @@
-﻿using MathParser.Functions;
+﻿using EgorLucky.MathParser.Functions;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace MathParser.FunctionParsers
+namespace EgorLucky.MathParser.FunctionParsers
 {
     public class CosParser : IFunctionParser
     {

@@ -1,9 +1,9 @@
-﻿using MathParserClasses;
+﻿using EgorLucky.MathParser;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace MathParser
+namespace EgorLucky.MathParser
 {
     public class VariableEqualityComparer : IEqualityComparer<Variable>
     {

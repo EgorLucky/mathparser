@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace MathParser.Constants
+namespace EgorLucky.MathParser.Constants
 {
     public class E: IConst
     {

@@ -1,10 +1,10 @@
-﻿using MathParser;
-using MathParser.Functions;
+﻿using EgorLucky.MathParser;
+using EgorLucky.MathParser.Functions;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace MathParser.FunctionParsers
+namespace EgorLucky.MathParser.FunctionParsers
 {
     public class TgParser : IFunctionParser
     {
@@ -28,7 +28,7 @@ namespace MathParser.FunctionParsers
             if (!expression.StartsWith("tg"))
                 return mathTryParseResult;
 
-            string argString = expression.Substring(3);
+            string argString = expression.Substring(2);
 
             var parseResult = _mathParser.TryParse(argString, variables);
 

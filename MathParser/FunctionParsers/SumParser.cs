@@ -1,11 +1,10 @@
-﻿using MathParserClasses;
-using MathParserClasses.Functions;
+﻿using EgorLucky.MathParser.Functions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace MathParser.FunctionParsers
+namespace EgorLucky.MathParser.FunctionParsers
 {
     public class SumParser : IFunctionParser
     {
@@ -26,10 +25,6 @@ namespace MathParser.FunctionParsers
 
         public MathTryParseResult TryParse(string expression, ICollection<Variable> variables = null)
         {
-            //Console.WriteLine("SumFactory "+expression);
-            //if (Validate.IsExpressionInBrackets(expression))
-            //    expression = expression.Remove(expression.Length - 1, 1)
-            //                            .Remove(0, 1);
             var sum = new Sum();
 
             var balance = 0;

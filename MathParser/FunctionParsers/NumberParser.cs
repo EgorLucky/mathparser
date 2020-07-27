@@ -1,10 +1,10 @@
-﻿using MathParserClasses;
-using MathParserClasses.Functions;
+﻿using EgorLucky.MathParser.Functions;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 
-namespace MathParser.FunctionParsers
+namespace EgorLucky.MathParser.FunctionParsers
 {
     public class NumberParser : IFunctionParser
     {
@@ -18,7 +18,10 @@ namespace MathParser.FunctionParsers
         public MathTryParseResult TryParse(string expression, ICollection<Variable> variables = null)
         {
             if (!string.IsNullOrEmpty(expression)
-                && double.TryParse(expression.Replace("+-1", "-1"), out double result))
+                && double.TryParse(expression.Replace("+-1", "-1"), 
+                                    NumberStyles.Number, 
+                                    CultureInfo.CreateSpecificCulture("en-EN"), 
+                                    out double result))
                 return new MathTryParseResult
                 {
                     IsSuccessfulCreated = true,
