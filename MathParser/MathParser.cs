@@ -52,6 +52,13 @@ namespace EgorLucky.MathParser
         /// <returns>MathTryParseResult</returns>
         public MathTryParseResult TryParse(string mathExpression, ICollection<Variable> variables = null)
         {
+            if(string.IsNullOrEmpty(mathExpression) || mathExpression.All(ch => char.IsWhiteSpace(ch)))
+                return new MathTryParseResult()
+                {
+                    IsSuccessfulCreated = false,
+                    ErrorMessage = $"Empty string in mathExpression"
+                };
+
             //форматирование строки
             mathExpression = mathExpression.Replace(" ", "");
             if (!mathExpression.Contains("+-1*"))
