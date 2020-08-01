@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace EgorLucky.MathParser
 {
-    public interface IFunction
+    public interface IFunction: IExpression
     {
-        string Name { get; }
-        double ComputeValue(ICollection<Parameter> variables);
+        ICollection<IExpression> Arguments { get; set; }
     }
 }

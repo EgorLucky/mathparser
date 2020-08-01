@@ -5,13 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EgorLucky.MathParser.Functions
+namespace EgorLucky.MathParser.Expressions
 {
-    class Fraction: IFunction
+    class Fraction: IExpression
     {
         public string Name => nameof(Fraction);
-        public IFunction Numerator { get; set; }
-        public IFunction Denominator { get; set; }
+        public IExpression Numerator { get; set; }
+        public IExpression Denominator { get; set; }
         public double ComputeValue(ICollection<Parameter> variables)
         {
             return Numerator.ComputeValue(variables) / Denominator.ComputeValue(variables);

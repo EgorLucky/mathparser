@@ -5,16 +5,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EgorLucky.MathParser.Functions
+namespace EgorLucky.MathParser.Expressions
 {
-    public class Sum : IFunction
+    public class Sum : IExpression
     {
         public string Name => nameof(Sum);
         public Sum()
         {
-            Terms = new List<IFunction>();
+            Terms = new List<IExpression>();
         }
-        public List<IFunction> Terms { get; set; }
+        public List<IExpression> Terms { get; set; }
         public double ComputeValue(ICollection<Parameter> variables)
         {
             return Terms.Sum(p => p.ComputeValue(variables));

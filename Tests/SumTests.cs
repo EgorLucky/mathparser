@@ -28,16 +28,17 @@ namespace Tests
 
             var computedResult = 0d;
             if(result.IsSuccessfulCreated)
-                computedResult = result.Function.ComputeValue(new List<Parameter>() { parameter });
+                computedResult = result.Expression.ComputeValue(new List<Parameter>() { parameter });
 
             var expectedResult = 2 + 0.5 + 2.5 * Math.Cos(Math.PI) - Math.Log(8, 2) + Math.Sin(parameter.Value) + Math.Pow(Math.Tan(parameter.Value), 2);
 
             Assert.True(result.IsSuccessfulCreated);
+            Assert.Equal("Sum", result.Expression.Name);
             Assert.Equal(expectedResult, computedResult);
         }
 
         [Fact]
-        public void ParseSumWithUnexistFunction()
+        public void ParseSumWithUnexistExpression()
         {
             var expression = "2 + 0.5 + 2.5*cos(pi) - log(2, 8) + sin(x) + unexistng(x)^2";
             var parameter = new Parameter

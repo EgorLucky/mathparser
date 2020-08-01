@@ -1,35 +1,44 @@
-﻿using EgorLucky.MathParser.Functions;
+﻿using EgorLucky.MathParser.Expressions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
-namespace EgorLucky.MathParser.FunctionParsers
+namespace EgorLucky.MathParser.ExpressionParsers
 {
-    public class ProductParser: IFunctionParser
+    public class SumParser : IExpressionParser
     {
+        private readonly ProductParser _productFactory;
         private readonly MathParser _mathParser;
 
-        public ProductParser(MathParser mathParser)
+        public SumParser(ProductParser productFactory)
+        {
+            _productFactory = productFactory;
+        }
+
+        public SumParser(MathParser mathParser)
         {
             _mathParser = mathParser;
         }
 
-        public string Name => nameof(Product);
+        public string Name => nameof(Sum);
 
         public MathTryParseResult TryParse(string expression, ICollection<Variable> variables = null)
         {
-            var result = new Product();
+            var sum = new Sum();
+
             var balance = 0;
-            var factor = "";
+            var term = "";
             var counter = 0;
 
             var mathTryParseResult = new MathTryParseResult()
             {
-                ErrorMessage = "This is not product: " + expression,
+                ErrorMessage = "This is not sum: " + expression,
                 IsSuccessfulCreated = false
             };
 
-            if (!expression.Contains("*"))
+            if (!expression.Contains("+") && !expression.Contains("-") ||
+                (expression.Last() == '+' || expression.Last() == '-'))
                 return mathTryParseResult;
 
             foreach (var ch in expression)
@@ -39,45 +48,39 @@ namespace EgorLucky.MathParser.FunctionParsers
                     balance--;
                 if (ch == ')')
                     balance++;
-
-                if (ch == '*' && balance == 0)
+                
+                if ((ch == '+' || ch == '-') && balance == 0 && counter != 1)
                 {
-                    var parseResult = _mathParser.TryParse(factor, variables);
+                    var parseResult = _mathParser.TryParse(term, variables);
+
                     if (!parseResult.IsSuccessfulCreated)
                         return parseResult;
-
-                    if(parseResult.Function.GetType() == typeof(Sum) && !Validate.IsExpressionInBrackets(factor))
-                        return mathTryParseResult;
-
-                    result.Factors.Add(parseResult.Function);
-                    factor = "";
+                    sum.Terms.Add(parseResult.Expression);
+                    term = ch == '-'? "-":"";
                     continue;
                 }
 
-                factor += ch;
+                term += ch;
                 if (counter == expression.Length)
                 {
-                    if(result.Factors.Count == 0)
+                    if (sum.Terms.Count == 0)
                         return mathTryParseResult;
 
-                    var parseResult = _mathParser.TryParse(factor, variables);
+                    var parseResult = _mathParser.TryParse(term, variables);
+
                     if (!parseResult.IsSuccessfulCreated)
                         return parseResult;
-
-                    if (parseResult.Function.GetType() == typeof(Sum) && !Validate.IsExpressionInBrackets(factor))
-                        return mathTryParseResult;
-
-                    result.Factors.Add(parseResult.Function);
-                    continue;
+                    sum.Terms.Add(parseResult.Expression);
+                    
                 }
             }
 
-            if (result.Factors.Count == 1)
+            if(sum.Terms.Count == 1)
                 return mathTryParseResult;
 
             mathTryParseResult.IsSuccessfulCreated = true;
             mathTryParseResult.ErrorMessage = "";
-            mathTryParseResult.Function = result;
+            mathTryParseResult.Expression = sum;
 
             return mathTryParseResult;
         }

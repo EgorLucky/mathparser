@@ -1,12 +1,12 @@
-﻿using EgorLucky.MathParser.Functions;
+﻿using EgorLucky.MathParser.Expressions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace EgorLucky.MathParser.FunctionParsers
+namespace EgorLucky.MathParser.ExpressionParsers
 {
-    public class FractionParser : IFunctionParser
+    public class FractionParser : IExpressionParser
     {
         private readonly MathParser _mathParser;
 
@@ -25,7 +25,7 @@ namespace EgorLucky.MathParser.FunctionParsers
                 IsSuccessfulCreated = false
             };
 
-            if (!expression.Contains("/"))
+            if (!expression.Contains("/") || expression.EndsWith("/"))
                 return mathTryParseResult;
 
             for (var i = expression.Length - 1; i >= 0; i--)
@@ -51,21 +51,21 @@ namespace EgorLucky.MathParser.FunctionParsers
                             return denominatorParseResult;
 
                         var types = new Type[] { typeof(Sum), typeof(Product) };
-                        if (types.Contains(numeratorParseResult.Function.GetType()) &&
+                        if (types.Contains(numeratorParseResult.Expression.GetType()) &&
                             !Validate.IsExpressionInBrackets(numerator))
                             return mathTryParseResult;
 
-                        if (types.Contains(denominatorParseResult.Function.GetType()) &&
+                        if (types.Contains(denominatorParseResult.Expression.GetType()) &&
                             !Validate.IsExpressionInBrackets(denominator))
                             return mathTryParseResult;
 
 
                         mathTryParseResult.IsSuccessfulCreated = true;
                         mathTryParseResult.ErrorMessage = "";
-                        mathTryParseResult.Function = new Fraction()
+                        mathTryParseResult.Expression = new Fraction()
                         {
-                            Numerator = numeratorParseResult.Function,
-                            Denominator = denominatorParseResult.Function
+                            Numerator = numeratorParseResult.Expression,
+                            Denominator = denominatorParseResult.Expression
                         };
 
                         return mathTryParseResult;

@@ -29,10 +29,11 @@ namespace Tests
 
             var computedResult = 0d;
             if (result.IsSuccessfulCreated)
-                computedResult = result.Function.ComputeValue(new List<Parameter>() { parameter });
+                computedResult = result.Expression.ComputeValue(new List<Parameter>() { parameter });
             var expectedResult = 1d/2d/3d/4d/parameter.Value;
 
             Assert.True(result.IsSuccessfulCreated);
+            Assert.Equal("Fraction", result.Expression.Name);
             Assert.Equal(expectedResult, computedResult);
         }
     }

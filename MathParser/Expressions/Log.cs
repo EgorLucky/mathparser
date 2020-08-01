@@ -1,16 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
-namespace EgorLucky.MathParser.Functions
+namespace EgorLucky.MathParser.Expressions
 {
     public class Log : IFunction
     {
         public string Name => nameof(Log);
 
-        public IFunction Base { get; set; }
+        public IExpression Base => Arguments.FirstOrDefault();
 
-        public IFunction Argument { get; set; }
+        public IExpression Argument => Arguments.LastOrDefault();
+        public ICollection<IExpression> Arguments { get; set; }
 
         public double ComputeValue(ICollection<Parameter> variables)
         {

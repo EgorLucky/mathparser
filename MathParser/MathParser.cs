@@ -1,6 +1,6 @@
 ﻿using EgorLucky.MathParser;
 using EgorLucky.MathParser.Constants;
-using EgorLucky.MathParser.FunctionParsers;
+using EgorLucky.MathParser.ExpressionParsers;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -16,24 +16,25 @@ namespace EgorLucky.MathParser
         private readonly List<IConst> _constants;
         private readonly List<IMathParserEntity> _mathparserEntities;
         private readonly NumberParser _numberFactory;
-        private readonly List<IFunctionParser> _functionParsers;
+        private readonly List<IExpressionParser> _expressionParsers;
 
         public MathParser()
         {
-            _functionParsers = new List<IFunctionParser>();
-
-            _functionParsers.Add(new PowParser(this));
-            _functionParsers.Add(new FractionParser(this));
-            _functionParsers.Add(new SinParser(this));
-            _functionParsers.Add(new CosParser(this));
-            _functionParsers.Add(new TgParser(this));
-            _functionParsers.Add(new CtgParser(this));
-            _functionParsers.Add(new ExpParser(this));
-            _functionParsers.Add(new SumParser(this));
-            _functionParsers.Add(new ProductParser(this));
-            _functionParsers.Add(new LogParser(this));
             _numberFactory = new NumberParser();
-            _functionParsers.Add(_numberFactory);
+            _expressionParsers = new List<IExpressionParser>()
+            {
+                new PowParser(this),
+                new FractionParser(this),
+                new SinParser(this),
+                new CosParser(this),
+                new TgParser(this),
+                new CtgParser(this),
+                new ExpParser(this),
+                new SumParser(this),
+                new ProductParser(this),
+                new LogParser(this),
+                _numberFactory 
+            };
 
             _constants = new List<IConst>();
             _constants.Add(new PI());
@@ -41,7 +42,7 @@ namespace EgorLucky.MathParser
 
             _mathparserEntities = new List<IMathParserEntity>();
             _mathparserEntities.AddRange(_constants);
-            _mathparserEntities.AddRange(_functionParsers);
+            _mathparserEntities.AddRange(_expressionParsers);
         }
 
         /// <summary>
@@ -61,20 +62,8 @@ namespace EgorLucky.MathParser
 
             //форматирование строки
             mathExpression = mathExpression.Replace(" ", "");
-            if (!mathExpression.Contains("+-1*"))
-            {
-                if(mathExpression.StartsWith("-1*"))
-                {
-                    var subMathExpression = mathExpression.Substring(3);
-                    subMathExpression = subMathExpression.Replace("-", "+-1*");
-                    mathExpression = "-1*" + subMathExpression;
-                }
-                else if(mathExpression != "-1")
-                        mathExpression = mathExpression.Replace("-", "+-1*");
-            }
 
             var matchedName = string.Empty;
-            
             if(variables != null)
                 matchedName = variables.Where(v => _mathparserEntities.Exists(c => c.Name.ToString() == v.Name.ToLower()))
                                         .Select(v => v.Name)
@@ -86,7 +75,6 @@ namespace EgorLucky.MathParser
                     IsSuccessfulCreated = false,
                     ErrorMessage = $"Wrong name for variable {matchedName}. There is already entity with the same name"
                 };
-
 
             mathExpression = mathExpression.ToLower();
 
@@ -100,21 +88,19 @@ namespace EgorLucky.MathParser
             while (Validate.IsExpressionInBrackets(mathExpression))
                 mathExpression = mathExpression.Remove(mathExpression.Length - 1, 1)
                                         .Remove(0, 1);
-
             //начало парсинга
-
-            return TryParseFunction(mathExpression, variables);
+            return TryParseExpression(mathExpression, variables);
         }
 
-        private MathTryParseResult TryParseFunction(string expression, ICollection<Variable> variables)
+        private MathTryParseResult TryParseExpression(string expression, ICollection<Variable> variables)
         {
-            foreach(var functionParser in _functionParsers
-                                        .OrderBy(f => f.GetType() != typeof(SumParser))
-                                        .ThenBy(f => f.GetType() != typeof(ProductParser))
+            foreach(var expressionParser in _expressionParsers
+                                        .OrderByDescending(f => f is SumParser)
+                                        .ThenByDescending(f => f is ProductParser)
                                         .ThenByDescending(f => f.Name.Length)
                                         .ToList())
             {
-                var parseResult = functionParser.TryParse(expression, variables);
+                var parseResult = expressionParser.TryParse(expression, variables);
                 if(parseResult.IsSuccessfulCreated)
                 {
                     return parseResult;
@@ -129,20 +115,20 @@ namespace EgorLucky.MathParser
                 return new MathTryParseResult
                 {
                     IsSuccessfulCreated = true,
-                    Function = _numberFactory.Create(matchedConstant.Value)
+                    Expression = _numberFactory.Create(matchedConstant.Value)
                 };
 
             if (variables.Any(p => p.Name.ToLower() == expression))
                 return new MathTryParseResult
                 {
                     IsSuccessfulCreated = true,
-                    Function = ParseVariable(expression, variables)
+                    Expression = ParseVariable(expression, variables)
                 };
             
             return new MathTryParseResult
             {
                 IsSuccessfulCreated = false,
-                ErrorMessage = "Unknown function in expression: " + expression
+                ErrorMessage = "Unknown Expression in expression: " + expression
             };
         }
 
@@ -151,11 +137,11 @@ namespace EgorLucky.MathParser
         /// </summary>
         /// <param name="parser"></param>
         /// <returns></returns>
-        public MathParser AddFunctionParser(IFunctionParser parser)
+        public MathParser AddFunctionParser<Function>(FunctionParser<Function> parser) where Function:IFunction, new()
         {
             if (_mathparserEntities.Exists(e => e.Name.ToLower() == parser.Name.ToLower()))
                 throw new Exception($"Wrong name for entity {parser.Name}. There is already entity with the same name");
-            _functionParsers.Add(parser);
+            _expressionParsers.Add(parser);
             _mathparserEntities.Add(parser);
             return this;
         }
@@ -174,7 +160,7 @@ namespace EgorLucky.MathParser
             return this;
         }
 
-        IFunction ParseVariable(string expression, ICollection<Variable> variables)
+        IExpression ParseVariable(string expression, ICollection<Variable> variables)
         {
             var parameter = variables
                             .Where(p => p.Name.ToLower() == expression)

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace EgorLucky.MathParser
 {
-    public interface IFunctionParser :IMathParserEntity
+    public interface IExpressionParser :IMathParserEntity
     {
         MathTryParseResult TryParse(string expression, ICollection<Variable> variables = null);
     }

@@ -1,16 +1,16 @@
-﻿using EgorLucky.MathParser.Functions;
+﻿using EgorLucky.MathParser.Expressions;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
 
-namespace EgorLucky.MathParser.FunctionParsers
+namespace EgorLucky.MathParser.ExpressionParsers
 {
-    public class NumberParser : IFunctionParser
+    public class NumberParser : IExpressionParser
     {
         public string Name => nameof(Number);
 
-        public IFunction Create(double value)
+        public IExpression Create(double value)
         {
             return new Number() { Value = value };
         }
@@ -25,7 +25,7 @@ namespace EgorLucky.MathParser.FunctionParsers
                 return new MathTryParseResult
                 {
                     IsSuccessfulCreated = true,
-                    Function = new Number { Value = result }
+                    Expression = new Number { Value = result }
                 };
             else
                 return new MathTryParseResult

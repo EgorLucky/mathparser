@@ -5,7 +5,7 @@ using System.Text;
 
 namespace EgorLucky.MathParser
 {
-    public class Variable : IFunction
+    public class Variable : IExpression
     {
         public string Name { get; set; }
 

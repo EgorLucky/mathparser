@@ -28,10 +28,11 @@ namespace Tests
 
             var computedResult = 0d;
             if (result.IsSuccessfulCreated)
-                computedResult = result.Function.ComputeValue(new List<Parameter>() { parameter });
+                computedResult = result.Expression.ComputeValue(new List<Parameter>() { parameter });
             var expectedResult = Math.Pow(Math.Tan(parameter.Value), 2);
 
             Assert.True(result.IsSuccessfulCreated);
+            Assert.Equal("Pow", result.Expression.Name);
             Assert.Equal(expectedResult, computedResult);
         }
     }

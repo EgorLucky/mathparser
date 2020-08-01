@@ -1,12 +1,12 @@
-﻿using EgorLucky.MathParser.Functions;
+﻿using EgorLucky.MathParser.Expressions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace EgorLucky.MathParser.FunctionParsers
+namespace EgorLucky.MathParser.ExpressionParsers
 {
-    public class PowParser : IFunctionParser
+    public class PowParser : IExpressionParser
     {
         private readonly MathParser _mathParser;
 
@@ -25,7 +25,7 @@ namespace EgorLucky.MathParser.FunctionParsers
                 ErrorMessage = "This is not pow: " + expression,
                 IsSuccessfulCreated = false
             };
-            if (!expression.Contains("^"))
+            if (!expression.Contains("^") || expression.EndsWith("^"))
                 return mathTryParseResult;
 
             var i = -1;
@@ -47,7 +47,7 @@ namespace EgorLucky.MathParser.FunctionParsers
 
                         var types = new Type[] { typeof(Sum), typeof(Product)};
 
-                        if (types.Contains(baseParseResult.Function.GetType()) &&
+                        if (types.Contains(baseParseResult.Expression.GetType()) &&
                             !Validate.IsExpressionInBrackets(@base))
                             return baseParseResult;
 
@@ -55,16 +55,16 @@ namespace EgorLucky.MathParser.FunctionParsers
                         if (!logParseResult.IsSuccessfulCreated)
                             return logParseResult;
 
-                        if (types.Contains(logParseResult.Function.GetType()) &&
+                        if (types.Contains(logParseResult.Expression.GetType()) &&
                             !Validate.IsExpressionInBrackets(log))
                             return baseParseResult;
 
                         mathTryParseResult.IsSuccessfulCreated = true;
                         mathTryParseResult.ErrorMessage = "";
-                        mathTryParseResult.Function = new Pow()
+                        mathTryParseResult.Expression = new Pow()
                         {
-                            Base = baseParseResult.Function,
-                            Log = logParseResult.Function
+                            Base = baseParseResult.Expression,
+                            Log = logParseResult.Expression
                         };
 
                         return mathTryParseResult;

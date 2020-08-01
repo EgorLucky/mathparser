@@ -5,15 +5,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EgorLucky.MathParser.Functions
+namespace EgorLucky.MathParser.Expressions
 {
-    public class Ctg : IFunction
+    public class Number : IExpression
     {
-        public string Name => nameof(Ctg);
-        public IFunction Argument { get; set; }
+        public string Name => nameof(Number);
+        public double Value { get; set; }
         public double ComputeValue(ICollection<Parameter> variables)
         {
-            return 1.0 / Math.Tan(Argument.ComputeValue(variables));
+            return Value;
         }
     }
 }

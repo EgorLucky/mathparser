@@ -5,12 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EgorLucky.MathParser.Functions
+namespace EgorLucky.MathParser.Expressions
 {
     public class Exp : IFunction
     {
         public string Name => nameof(Exp);
-        public IFunction Argument { get; set; }
+        public IExpression Argument => Arguments.FirstOrDefault();
+        public ICollection<IExpression> Arguments { get; set; }
         public double ComputeValue(ICollection<Parameter> variables)
         {
             return Math.Exp(Argument.ComputeValue(variables));

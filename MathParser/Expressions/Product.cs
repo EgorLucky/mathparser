@@ -5,16 +5,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EgorLucky.MathParser.Functions
+namespace EgorLucky.MathParser.Expressions
 {
-    public class Product : IFunction
+    public class Product : IExpression
     {
         public string Name => nameof(Product);
         public Product()
         {
-            Factors = new List<IFunction>();
+            Factors = new List<IExpression>();
         }
-        public List<IFunction> Factors { get; set; }
+        public List<IExpression> Factors { get; set; }
         public double ComputeValue(ICollection<Parameter> variables)
         {
             var result = 1.0;
