@@ -5,5 +5,6 @@
         public bool IsSuccessfulCreated { get; set;}
         public IExpression Expression { get; set; }
         public string ErrorMessage { get; set; }
+        public string InputString { get; set; }
     }
 }

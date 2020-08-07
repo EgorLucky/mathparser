@@ -53,12 +53,15 @@ namespace EgorLucky.MathParser
         /// <returns>MathTryParseResult</returns>
         public MathTryParseResult TryParse(string mathExpression, ICollection<Variable> variables = null)
         {
-            if(string.IsNullOrEmpty(mathExpression) || mathExpression.All(ch => char.IsWhiteSpace(ch)))
-                return new MathTryParseResult()
-                {
-                    IsSuccessfulCreated = false,
-                    ErrorMessage = $"Empty string in mathExpression"
-                };
+            var defaultResult = new MathTryParseResult();
+            defaultResult.IsSuccessfulCreated = false;
+            defaultResult.InputString = mathExpression;
+
+            if (string.IsNullOrEmpty(mathExpression) || mathExpression.All(ch => char.IsWhiteSpace(ch)))
+            {
+                defaultResult.ErrorMessage = $"Empty string in mathExpression";
+                return defaultResult;
+            };
 
             //форматирование строки
             mathExpression = mathExpression.Replace(" ", "");
@@ -70,26 +73,28 @@ namespace EgorLucky.MathParser
                                         .FirstOrDefault();
 
             if (!string.IsNullOrEmpty(matchedName))
-                return new MathTryParseResult()
-                {
-                    IsSuccessfulCreated = false,
-                    ErrorMessage = $"Wrong name for variable {matchedName}. There is already entity with the same name"
-                };
+            {
+                defaultResult.ErrorMessage = $"Wrong name for variable {matchedName}. There is already entity with the same name";
+                return defaultResult;
+            };
 
             mathExpression = mathExpression.ToLower();
 
             if (!Validate.IsBracketsAreBalanced(mathExpression))
-                return new MathTryParseResult()
-                {
-                    IsSuccessfulCreated = false,
-                    ErrorMessage = "brackets are not balanced"
-                };
+            {
+                defaultResult.ErrorMessage = "brackets are not balanced";
+                return defaultResult;
+            };
 
             while (Validate.IsExpressionInBrackets(mathExpression))
-                mathExpression = mathExpression.Remove(mathExpression.Length - 1, 1)
-                                        .Remove(0, 1);
+                mathExpression = mathExpression
+                                    .Remove(mathExpression.Length - 1, 1)
+                                    .Remove(0, 1);
             //начало парсинга
-            return TryParseExpression(mathExpression, variables);
+            var tryParseResult = TryParseExpression(mathExpression, variables);
+            tryParseResult.InputString = defaultResult.InputString;
+
+            return tryParseResult;
         }
 
         private MathTryParseResult TryParseExpression(string expression, ICollection<Variable> variables)
