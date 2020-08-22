@@ -52,6 +52,11 @@ else
 - ctg(x)
 - log(a, b), где a - основание логарифма
 
+### Ппримеры выражений:
+- (1+2*cos(pi/2))^2
+- (x-y)*(cos(0))
+- 2 + 0.5 + 2.5*cos(pi) - log(2, 8) + sin(x) + tg(x)^2
+
 Nuget: https://www.nuget.org/packages/EgorLucky.MathParser
 
 WebApi-сервис, использующий библиотеку, можно посмотреть здесь: https://github.com/EgorLucky/mathparser-rest-service
