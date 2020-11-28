@@ -63,9 +63,20 @@ namespace EgorLucky.MathParser
                 return defaultResult;
             };
 
-            //форматирование строки
-            mathExpression = mathExpression.Replace(" ", "");
 
+            //проверка на корректность имен переменных
+            if(variables != null && variables.Any(v => string.IsNullOrEmpty(v.Name)))
+            {
+                defaultResult.ErrorMessage = $"Empty variable name";
+                return defaultResult;
+            };
+            if (variables != null && variables.Any(v => v.Name.Any(ch => !char.IsLetter(ch))))
+            {
+                defaultResult.ErrorMessage = $"Empty variable name";
+                return defaultResult;
+            };
+
+            //проверка имен переменных на совпадение с именами констант
             var matchedName = string.Empty;
             if(variables != null)
                 matchedName = variables.Where(v => _mathparserEntities.Exists(c => c.Name.ToString() == v.Name.ToLower()))
@@ -78,6 +89,9 @@ namespace EgorLucky.MathParser
                 return defaultResult;
             };
 
+
+            //форматирование строки
+            mathExpression = mathExpression.Replace(" ", "");
             mathExpression = mathExpression.ToLower();
 
             if (!Validate.IsBracketsAreBalanced(mathExpression))
@@ -90,6 +104,13 @@ namespace EgorLucky.MathParser
                 mathExpression = mathExpression
                                     .Remove(mathExpression.Length - 1, 1)
                                     .Remove(0, 1);
+
+            if (string.IsNullOrEmpty(mathExpression))
+            {
+                defaultResult.ErrorMessage = $"Empty string in mathExpression";
+                return defaultResult;
+            };
+
             //начало парсинга
             var tryParseResult = TryParseExpression(mathExpression, variables);
             tryParseResult.InputString = defaultResult.InputString;
@@ -123,7 +144,7 @@ namespace EgorLucky.MathParser
                     Expression = _numberFactory.Create(matchedConstant.Value)
                 };
 
-            if (variables.Any(p => p.Name.ToLower() == expression))
+            if (variables != null && variables.Any(p => p.Name.ToLower() == expression))
                 return new MathTryParseResult
                 {
                     IsSuccessfulCreated = true,

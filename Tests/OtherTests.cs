@@ -36,5 +36,15 @@ namespace Tests
             Assert.Equal("Pow", result.Expression.Name);
             Assert.Equal(expectedResult, computedResult);
         }
+
+        [Fact]
+        public void ParseEmptyWithManyBrackets()
+        {
+            var expression = "((()))";
+            
+            var result = _parser.TryParse(expression);
+
+            Assert.False(result.IsSuccessfulCreated);
+        }
     }
 }

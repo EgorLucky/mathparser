@@ -6,6 +6,11 @@ namespace EgorLucky.MathParser
     {
         public static bool IsExpressionInBrackets(string expression)
         {
+            if (string.IsNullOrEmpty(expression))
+            {
+                return false;
+            }
+
             if (expression.First() != '(' || expression.Last() != ')')
                 return false;
 
