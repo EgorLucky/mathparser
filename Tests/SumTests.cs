@@ -38,6 +38,46 @@ namespace Tests
         }
 
         [Fact]
+        public void ParseSumWithManyPlusesInTheEnd()
+        {
+            var expression = "2 + 0.5 + 2.5*cos(pi) - log(2, 8) + sin(x) + tg(x)^2++++++";
+            var parameter = new Parameter
+            {
+                VariableName = "x",
+                Value = 0
+            };
+
+            var variables = new List<Variable>()
+            {
+                parameter.GetVariable()
+            };
+
+            var result = _parser.TryParse(expression, variables);
+
+            Assert.False(result.IsSuccessfulCreated);
+        }
+
+        [Fact]
+        public void ParseSumWithMany_F_LettersInTheEnd()
+        {
+            var expression = "2 + 0.5 + 2.5*cos(pi) - log(2, 8) + sin(x) + tg(x)^2ffffffff";
+            var parameter = new Parameter
+            {
+                VariableName = "x",
+                Value = 0
+            };
+
+            var variables = new List<Variable>()
+            {
+                parameter.GetVariable()
+            };
+
+            var result = _parser.TryParse(expression, variables);
+
+            Assert.False(result.IsSuccessfulCreated);
+        }
+
+        [Fact]
         public void ParseSumWithUnexistExpression()
         {
             var expression = "2 + 0.5 + 2.5*cos(pi) - log(2, 8) + sin(x) + unexistng(x)^2";

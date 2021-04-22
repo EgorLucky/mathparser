@@ -45,19 +45,19 @@ namespace EgorLucky.MathParser.ExpressionParsers
                         if (!baseParseResult.IsSuccessfulCreated)
                             return baseParseResult;
 
-                        var types = new Type[] { typeof(Sum), typeof(Product)};
+                        var bracketTypes = new Type[] { typeof(Sum), typeof(Product)};
 
-                        if (types.Contains(baseParseResult.Expression.GetType()) &&
+                        if (bracketTypes.Contains(baseParseResult.Expression.GetType()) &&
                             !Validate.IsExpressionInBrackets(@base))
-                            return baseParseResult;
+                            return mathTryParseResult;
 
                         var logParseResult = _mathParser.TryParse(log, variables);
                         if (!logParseResult.IsSuccessfulCreated)
-                            return logParseResult;
+                            return mathTryParseResult;
 
-                        if (types.Contains(logParseResult.Expression.GetType()) &&
+                        if (bracketTypes.Contains(logParseResult.Expression.GetType()) &&
                             !Validate.IsExpressionInBrackets(log))
-                            return baseParseResult;
+                            return mathTryParseResult;
 
                         mathTryParseResult.IsSuccessfulCreated = true;
                         mathTryParseResult.ErrorMessage = "";
