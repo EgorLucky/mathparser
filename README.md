@@ -57,12 +57,13 @@ else
 - (x-y)*(cos(0))
 - 2 + 0.5 + 2.5*cos(pi) - log(2, 8) + sin(x) + tg(x)^2
 
-Nuget: https://www.nuget.org/packages/EgorLucky.MathParser
+[Nuget](https://www.nuget.org/packages/EgorLucky.MathParser)
 
-WebApi-сервис, использующий библиотеку, можно посмотреть здесь: https://github.com/EgorLucky/mathparser-rest-service
+[WebApi-сервис]( https://github.com/EgorLucky/mathparser-rest-service)
 
-Задеплоено здесь (хостится на бесплатном тарифе, поэтому может тормозить): https://mathparser.herokuapp.com/swagger
+[Задеплоено здесь](https://mathparser.herokuapp.com/swagger) (хостится на бесплатном тарифе, поэтому может тормозить)
 
-Фронт, в котором можно потыкать сервис, можно посмотреть здесь:https://github.com/EgorLucky/mathparser-front
+[Фронт, в котором можно потыкать сервис](https://github.com/EgorLucky/mathparser-front) 
 
-Задеплоено здесь (тоже хостится на бесплатном тарифе, поэтому может тормозить): http://mathparser-front.herokuapp.com
+[Задеплоено здесь](http://mathparser-front.herokuapp.com) (тоже хостится на бесплатном тарифе, поэтому может тормозить)
+
