@@ -57,37 +57,56 @@ namespace EgorLucky.MathParser
             defaultResult.IsSuccessfulCreated = false;
             defaultResult.InputString = mathExpression;
 
+            var context = new MathParserTryParseParameters(mathExpression, variables);
+
+            var errorMessage = CheckTryParseParameters(context);
+
+            if (!string.IsNullOrEmpty(errorMessage))
+            {
+                defaultResult.ErrorMessage = errorMessage;
+                return defaultResult;
+            }
+
+            var tryParseResult = TryParseExpression(context.MathExpression, context.Variables);
+            tryParseResult.InputString = defaultResult.InputString;
+
+            return tryParseResult;
+        }
+
+        private string CheckTryParseParameters(MathParserTryParseParameters context)
+        {
+            var errorMessage = "";
+            var mathExpression = context.MathExpression;
+            var variables = context.Variables;
+
+
             if (string.IsNullOrEmpty(mathExpression) || mathExpression.All(ch => char.IsWhiteSpace(ch)))
             {
-                defaultResult.ErrorMessage = $"Empty string in mathExpression";
-                return defaultResult;
-            };
-
+                errorMessage = $"Empty string in mathExpression";
+            }
 
             //проверка на корректность имен переменных
-            if(variables != null && variables.Any(v => string.IsNullOrEmpty(v.Name)))
+            if (variables != null && variables.Any(v => string.IsNullOrEmpty(v.Name)))
             {
-                defaultResult.ErrorMessage = $"Empty variable name";
-                return defaultResult;
-            };
+                errorMessage = $"Empty variable name";
+            }
+
             if (variables != null && variables.Any(v => v.Name.Any(ch => !char.IsLetter(ch))))
             {
-                defaultResult.ErrorMessage = $"Empty variable name";
-                return defaultResult;
-            };
+                errorMessage = $"Incorrect variable name";
+            }
 
             //проверка имен переменных на совпадение с именами констант
             var matchedName = string.Empty;
-            if(variables != null)
+            if (variables != null)
                 matchedName = variables.Where(v => _mathparserEntities.Exists(c => c.Name.ToString() == v.Name.ToLower()))
                                         .Select(v => v.Name)
                                         .FirstOrDefault();
 
             if (!string.IsNullOrEmpty(matchedName))
             {
-                defaultResult.ErrorMessage = $"Wrong name for variable {matchedName}. There is already entity with the same name";
-                return defaultResult;
-            };
+                errorMessage = $"Wrong name for variable {matchedName}. There is already entity with the same name";
+            }
 
 
             //форматирование строки
@@ -96,26 +115,22 @@ namespace EgorLucky.MathParser
 
             if (!Validate.IsBracketsAreBalanced(mathExpression))
             {
-                defaultResult.ErrorMessage = "brackets are not balanced";
-                return defaultResult;
-            };
+                errorMessage = "brackets are not balanced";
+            }
 
             while (Validate.IsExpressionInBrackets(mathExpression))
                 mathExpression = mathExpression
                                     .Remove(mathExpression.Length - 1, 1)
                                     .Remove(0, 1);
 
+            context.MathExpression = mathExpression;
+
             if (string.IsNullOrEmpty(mathExpression))
             {
-                defaultResult.ErrorMessage = $"Empty string in mathExpression";
-                return defaultResult;
-            };
+                errorMessage = $"Empty string in mathExpression";
+            }
 
-            //начало парсинга
-            var tryParseResult = TryParseExpression(mathExpression, variables);
-            tryParseResult.InputString = defaultResult.InputString;
-
-            return tryParseResult;
+            return errorMessage;
         }
 
         private MathTryParseResult TryParseExpression(string expression, ICollection<Variable> variables)
