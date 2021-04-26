@@ -57,9 +57,9 @@ namespace EgorLucky.MathParser
             defaultResult.IsSuccessfulCreated = false;
             defaultResult.InputString = mathExpression;
 
-            var context = new MathParserTryParseParameters(mathExpression, variables);
+            var parameters = new MathParserTryParseParameters(mathExpression, variables);
 
-            var errorMessage = CheckTryParseParameters(context);
+            var errorMessage = CheckTryParseParameters(parameters);
 
             if (!string.IsNullOrEmpty(errorMessage))
             {
@@ -67,17 +67,17 @@ namespace EgorLucky.MathParser
                 return defaultResult;
             }
 
-            var tryParseResult = TryParseExpression(context.MathExpression, context.Variables);
+            var tryParseResult = TryParseExpression(parameters.MathExpression, parameters.Variables);
             tryParseResult.InputString = defaultResult.InputString;
 
             return tryParseResult;
         }
 
-        private string CheckTryParseParameters(MathParserTryParseParameters context)
+        private string CheckTryParseParameters(MathParserTryParseParameters parameters)
         {
             var errorMessage = "";
-            var mathExpression = context.MathExpression;
-            var variables = context.Variables;
+            var mathExpression = parameters.MathExpression;
+            var variables = parameters.Variables;
 
 
             if (string.IsNullOrEmpty(mathExpression) || mathExpression.All(ch => char.IsWhiteSpace(ch)))
@@ -123,7 +123,7 @@ namespace EgorLucky.MathParser
                                     .Remove(mathExpression.Length - 1, 1)
                                     .Remove(0, 1);
 
-            context.MathExpression = mathExpression;
+            parameters.MathExpression = mathExpression;
 
             if (string.IsNullOrEmpty(mathExpression))
             {
