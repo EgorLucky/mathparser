@@ -1,7 +1,31 @@
 # MathParser
 
-MathParser позволяет парсить строки с математическими выражениями и вычислять их. Пример использования:
+MathParser позволяет парсить строки с математическими выражениями и вычислять их.
 
+Простой пример:
+
+```cs
+var parser = new MathParser();
+
+var expression = "x+y+2*z";
+var parseResult = parser.TryParse(expression, "x", "y", "z");
+
+if (parseResult.IsSuccessfulCreated)
+{
+    var x = 0;
+    var y = 20;
+    var z = 1.1;
+    
+    var result = parseResult.Expression.ComputeValue(x, y, z);
+    //выведет 22.2
+    Console.WriteLine(result);
+}
+else
+{
+    Console.WriteLine(parseResult.ErrorMessage);
+}
+```
+Пример посложнее:
 ```cs
 var parser = new MathParser();
 
