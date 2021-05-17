@@ -12,6 +12,7 @@ namespace EgorLucky.MathParser.Expressions
         public string Name => nameof(Tg);
         public IExpression Argument => Arguments.FirstOrDefault();
         public ICollection<IExpression> Arguments { get; set; }
+        public IEnumerable<Variable> Variables { get; set; }
         public double ComputeValue(ICollection<Parameter> variables)
         {
             return Math.Tan(Argument.ComputeValue(variables));

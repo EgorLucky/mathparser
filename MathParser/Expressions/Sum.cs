@@ -15,6 +15,7 @@ namespace EgorLucky.MathParser.Expressions
             Terms = new List<IExpression>();
         }
         public List<IExpression> Terms { get; set; }
+        public IEnumerable<Variable> Variables { get; set; }
         public double ComputeValue(ICollection<Parameter> variables)
         {
             return Terms.Sum(p => p.ComputeValue(variables));

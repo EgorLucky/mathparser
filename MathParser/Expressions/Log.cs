@@ -10,9 +10,9 @@ namespace EgorLucky.MathParser.Expressions
         public string Name => nameof(Log);
 
         public IExpression Base => Arguments.FirstOrDefault();
-
         public IExpression Argument => Arguments.LastOrDefault();
         public ICollection<IExpression> Arguments { get; set; }
+        public IEnumerable<Variable> Variables { get; set; }
 
         public double ComputeValue(ICollection<Parameter> variables)
         {

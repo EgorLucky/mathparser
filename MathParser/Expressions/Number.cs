@@ -11,6 +11,7 @@ namespace EgorLucky.MathParser.Expressions
     {
         public string Name => nameof(Number);
         public double Value { get; set; }
+        public IEnumerable<Variable> Variables { get; set; }
         public double ComputeValue(ICollection<Parameter> variables)
         {
             return Value;

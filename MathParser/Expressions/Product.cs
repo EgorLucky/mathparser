@@ -15,6 +15,7 @@ namespace EgorLucky.MathParser.Expressions
             Factors = new List<IExpression>();
         }
         public List<IExpression> Factors { get; set; }
+        public IEnumerable<Variable> Variables { get; set; }
         public double ComputeValue(ICollection<Parameter> variables)
         {
             var result = 1.0;

@@ -12,6 +12,7 @@ namespace EgorLucky.MathParser.Expressions
         public string Name => nameof(Pow);
         public IExpression Log { get; set; }
         public IExpression Base { get; set; }
+        public IEnumerable<Variable> Variables { get; set; }
         public double ComputeValue(ICollection<Parameter> variables)
         {
             var @base = Base.ComputeValue(variables);
