@@ -25,7 +25,11 @@ namespace EgorLucky.MathParser.ExpressionParsers
                 return new MathTryParseResult
                 {
                     IsSuccessfulCreated = true,
-                    Expression = new Number { Value = result }
+                    Expression = new Number 
+                    { 
+                        Value = result,
+                        Variables = variables
+                    }
                 };
             else
                 return new MathTryParseResult

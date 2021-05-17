@@ -91,7 +91,11 @@ namespace EgorLucky.MathParser.ExpressionParsers
             if (arguments.Count != _argCount)
                 return mathTryParseResult;
 
-            var result = new Function() { Arguments = arguments };
+            var result = new Function() 
+            { 
+                Arguments = arguments,
+                Variables = variables
+            };
 
             mathTryParseResult.IsSuccessfulCreated = true;
             mathTryParseResult.ErrorMessage = "";

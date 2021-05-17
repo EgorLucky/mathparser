@@ -8,6 +8,7 @@ namespace EgorLucky.MathParser
     public class Variable : IExpression
     {
         public string Name { get; set; }
+        public IEnumerable<Variable> Variables { get; set; }
 
         public double ComputeValue(ICollection<Parameter> parameters)
         {

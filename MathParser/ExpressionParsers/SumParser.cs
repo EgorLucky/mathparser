@@ -78,6 +78,8 @@ namespace EgorLucky.MathParser.ExpressionParsers
             if(sum.Terms.Count == 1)
                 return mathTryParseResult;
 
+            sum.Variables = variables;
+
             mathTryParseResult.IsSuccessfulCreated = true;
             mathTryParseResult.ErrorMessage = "";
             mathTryParseResult.Expression = sum;

@@ -64,7 +64,8 @@ namespace EgorLucky.MathParser.ExpressionParsers
                         mathTryParseResult.Expression = new Pow()
                         {
                             Base = baseParseResult.Expression,
-                            Log = logParseResult.Expression
+                            Log = logParseResult.Expression,
+                            Variables = variables
                         };
 
                         return mathTryParseResult;

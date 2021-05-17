@@ -65,7 +65,8 @@ namespace EgorLucky.MathParser.ExpressionParsers
                         mathTryParseResult.Expression = new Fraction()
                         {
                             Numerator = numeratorParseResult.Expression,
-                            Denominator = denominatorParseResult.Expression
+                            Denominator = denominatorParseResult.Expression,
+                            Variables = variables
                         };
 
                         return mathTryParseResult;

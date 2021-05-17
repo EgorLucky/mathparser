@@ -79,6 +79,8 @@ namespace EgorLucky.MathParser.ExpressionParsers
             if (result.Factors.Count == 1)
                 return mathTryParseResult;
 
+            result.Variables = variables;
+
             mathTryParseResult.IsSuccessfulCreated = true;
             mathTryParseResult.ErrorMessage = "";
             mathTryParseResult.Expression = result;
