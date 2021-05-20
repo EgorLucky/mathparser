@@ -5,14 +5,14 @@ using System.Text;
 
 namespace EgorLucky.MathParser.Expressions
 {
-    public class Log : IFunction
+    public record Log : IFunction
     {
         public string Name => nameof(Log);
 
         public IExpression Base => Arguments.FirstOrDefault();
         public IExpression Argument => Arguments.LastOrDefault();
-        public ICollection<IExpression> Arguments { get; set; }
-        public IEnumerable<Variable> Variables { get; set; }
+        public ICollection<IExpression> Arguments { get; init; }
+        public IEnumerable<Variable> Variables { get; init; }
 
         public double ComputeValue(ICollection<Parameter> variables)
         {

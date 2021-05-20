@@ -38,7 +38,7 @@ namespace EgorLucky.MathParser.ExpressionParsers
 
             if (_argCount > 1 && !Validate.IsExpressionInBrackets(argsString))
             {
-                mathTryParseResult.ErrorMessage = $"Incorrect arguments in {Name}";
+                mathTryParseResult = mathTryParseResult with { ErrorMessage = $"Incorrect arguments in {Name}" };
                 return mathTryParseResult;
             }
 
@@ -97,11 +97,11 @@ namespace EgorLucky.MathParser.ExpressionParsers
                 Variables = variables
             };
 
-            mathTryParseResult.IsSuccessfulCreated = true;
-            mathTryParseResult.ErrorMessage = "";
-            mathTryParseResult.Expression = result;
-
-            return mathTryParseResult;
+            return new MathTryParseResult
+            {
+                IsSuccessfulCreated = true,
+                Expression = result
+            };
         }
     }
 }

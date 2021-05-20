@@ -59,17 +59,17 @@ namespace EgorLucky.MathParser.ExpressionParsers
                             !Validate.IsExpressionInBrackets(denominator))
                             return mathTryParseResult;
 
-
-                        mathTryParseResult.IsSuccessfulCreated = true;
-                        mathTryParseResult.ErrorMessage = "";
-                        mathTryParseResult.Expression = new Fraction()
+                        return new MathTryParseResult
                         {
-                            Numerator = numeratorParseResult.Expression,
-                            Denominator = denominatorParseResult.Expression,
-                            Variables = variables
+                            IsSuccessfulCreated = true,
+                            ErrorMessage = "",
+                            Expression = new Fraction()
+                            {
+                                Numerator = numeratorParseResult.Expression,
+                                Denominator = denominatorParseResult.Expression,
+                                Variables = variables
+                            }
                         };
-
-                        return mathTryParseResult;
                     }
                 }
             }

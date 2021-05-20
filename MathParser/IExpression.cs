@@ -9,7 +9,7 @@ namespace EgorLucky.MathParser
     public interface IExpression
     {
         string Name { get; }
-        IEnumerable<Variable> Variables { get; set; }
+        IEnumerable<Variable> Variables { get; init; }
 
         double ComputeValue(ICollection<Parameter> variables);
     }

@@ -13,11 +13,7 @@ namespace Tests
         public void ParseSum()
         {
             var expression = "2 + 0.5 + 2.5*cos(pi) - log(2, 8) + sin(x) + tg(x)^2";
-            var parameter = new Parameter
-            {
-                VariableName = "x",
-                Value = 0
-            };
+            var parameter = new Parameter("x", 0);
 
             var variables = new List<Variable>()
             {

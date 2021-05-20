@@ -1,10 +1,10 @@
 ﻿namespace EgorLucky.MathParser
 {
-    public class MathTryParseResult
+    public record MathTryParseResult
     {
-        public bool IsSuccessfulCreated { get; set;}
-        public IExpression Expression { get; set; }
-        public string ErrorMessage { get; set; }
-        public string InputString { get; set; }
+        public bool IsSuccessfulCreated { get; init;}
+        public IExpression Expression { get; init; }
+        public string ErrorMessage { get; init; }
+        public string InputString { get; init; }
     }
 }

@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace EgorLucky.MathParser.Expressions
 {
-    public class Cos : IFunction
+    public record Cos : IFunction
     {
         public string Name => nameof(Cos);
         public IExpression Argument => Arguments.FirstOrDefault();
-        public ICollection<IExpression> Arguments { get; set; }
-        public IEnumerable<Variable> Variables { get; set; }
+        public ICollection<IExpression> Arguments { get; init; }
+        public IEnumerable<Variable> Variables { get; init; }
 
         public double ComputeValue(ICollection<Parameter> variables)
         {

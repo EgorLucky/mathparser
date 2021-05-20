@@ -53,9 +53,11 @@ namespace EgorLucky.MathParser
         /// <returns>MathTryParseResult</returns>
         public MathTryParseResult TryParse(string mathExpression, ICollection<Variable> variables = null)
         {
-            var defaultResult = new MathTryParseResult();
-            defaultResult.IsSuccessfulCreated = false;
-            defaultResult.InputString = mathExpression;
+            var defaultResult = new MathTryParseResult()
+            {
+                IsSuccessfulCreated = false,
+                InputString = mathExpression
+            };
 
             var parameters = new MathParserTryParseParameters(mathExpression, variables);
 
@@ -63,12 +65,12 @@ namespace EgorLucky.MathParser
 
             if (!string.IsNullOrEmpty(errorMessage))
             {
-                defaultResult.ErrorMessage = errorMessage;
+                defaultResult = defaultResult with { ErrorMessage = errorMessage };
                 return defaultResult;
             }
 
             var tryParseResult = TryParseExpression(parameters.MathExpression, parameters.Variables);
-            tryParseResult.InputString = defaultResult.InputString;
+            tryParseResult = tryParseResult with { InputString = defaultResult.InputString };
 
             return tryParseResult;
         }

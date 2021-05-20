@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace EgorLucky.MathParser.Expressions
 {
-    class Fraction: IExpression
+    record Fraction: IExpression
     {
         public string Name => nameof(Fraction);
-        public IExpression Numerator { get; set; }
-        public IExpression Denominator { get; set; }
-        public IEnumerable<Variable> Variables { get ; set; }
+        public IExpression Numerator { get; init; }
+        public IExpression Denominator { get; init; }
+        public IEnumerable<Variable> Variables { get ; init; }
 
         public double ComputeValue(ICollection<Parameter> variables)
         {

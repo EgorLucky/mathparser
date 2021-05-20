@@ -59,16 +59,17 @@ namespace EgorLucky.MathParser.ExpressionParsers
                             !Validate.IsExpressionInBrackets(log))
                             return mathTryParseResult;
 
-                        mathTryParseResult.IsSuccessfulCreated = true;
-                        mathTryParseResult.ErrorMessage = "";
-                        mathTryParseResult.Expression = new Pow()
+                        return new MathTryParseResult
                         {
-                            Base = baseParseResult.Expression,
-                            Log = logParseResult.Expression,
-                            Variables = variables
+                            IsSuccessfulCreated = true,
+                            ErrorMessage = "",
+                            Expression = new Pow()
+                            {
+                                Base = baseParseResult.Expression,
+                                Log = logParseResult.Expression,
+                                Variables = variables
+                            }
                         };
-
-                        return mathTryParseResult;
                     }
                 }
             }

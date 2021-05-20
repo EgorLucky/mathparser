@@ -6,6 +6,6 @@ namespace EgorLucky.MathParser
 {
     public interface IFunction: IExpression
     {
-        ICollection<IExpression> Arguments { get; set; }
+        ICollection<IExpression> Arguments { get; init; }
     }
 }

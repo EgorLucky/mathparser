@@ -18,7 +18,11 @@ namespace EgorLucky.MathParser.ExpressionParsers
 
         public MathTryParseResult TryParse(string expression, ICollection<Variable> variables = null)
         {
-            var result = new Product();
+            var result = new Product() 
+            { 
+                Variables = variables 
+            };
+
             var balance = 0;
             var factor = "";
             var counter = 0;
@@ -79,13 +83,11 @@ namespace EgorLucky.MathParser.ExpressionParsers
             if (result.Factors.Count == 1)
                 return mathTryParseResult;
 
-            result.Variables = variables;
-
-            mathTryParseResult.IsSuccessfulCreated = true;
-            mathTryParseResult.ErrorMessage = "";
-            mathTryParseResult.Expression = result;
-
-            return mathTryParseResult;
+            return new MathTryParseResult
+            {
+                IsSuccessfulCreated = true,
+                Expression = result
+            };
         }
     }
 }

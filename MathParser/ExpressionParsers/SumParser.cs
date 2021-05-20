@@ -11,11 +11,6 @@ namespace EgorLucky.MathParser.ExpressionParsers
         private readonly ProductParser _productFactory;
         private readonly MathParser _mathParser;
 
-        public SumParser(ProductParser productFactory)
-        {
-            _productFactory = productFactory;
-        }
-
         public SumParser(MathParser mathParser)
         {
             _mathParser = mathParser;
@@ -25,7 +20,10 @@ namespace EgorLucky.MathParser.ExpressionParsers
 
         public MathTryParseResult TryParse(string expression, ICollection<Variable> variables = null)
         {
-            var sum = new Sum();
+            var sum = new Sum() 
+            {
+                Variables = variables
+            };
 
             var balance = 0;
             var term = "";
@@ -78,13 +76,11 @@ namespace EgorLucky.MathParser.ExpressionParsers
             if(sum.Terms.Count == 1)
                 return mathTryParseResult;
 
-            sum.Variables = variables;
-
-            mathTryParseResult.IsSuccessfulCreated = true;
-            mathTryParseResult.ErrorMessage = "";
-            mathTryParseResult.Expression = sum;
-
-            return mathTryParseResult;
+            return new MathTryParseResult
+            {
+                IsSuccessfulCreated = true,
+                Expression = sum
+            };
         }
     }
 }

@@ -11,7 +11,7 @@ namespace EgorLucky.MathParser
         public static MathTryParseResult TryParse(this MathParser parser, string mathExpression, params string[] variableNames)
         {
             var variablesObjects = variableNames
-                .Select(v => new Variable { Name = v })
+                .Select(variableName => new Variable(variableName))
                 .ToList();
             return parser.TryParse(mathExpression, variablesObjects);
         }
@@ -29,11 +29,7 @@ namespace EgorLucky.MathParser
                 var index = 0;
                 foreach (var variable in expression.Variables)
                 {
-                    var parameter = new Parameter()
-                    {
-                        VariableName = variable.Name,
-                        Value = parameterValues[index]
-                    };
+                    var parameter = new Parameter(variable.Name, parameterValues[index]);
 
                     parameters.Add(parameter);
 

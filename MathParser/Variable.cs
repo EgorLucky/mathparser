@@ -5,10 +5,9 @@ using System.Text;
 
 namespace EgorLucky.MathParser
 {
-    public class Variable : IExpression
+    public record Variable(string Name = "") : IExpression
     {
-        public string Name { get; set; }
-        public IEnumerable<Variable> Variables { get; set; }
+        public IEnumerable<Variable> Variables { get; init; }
 
         public double ComputeValue(ICollection<Parameter> parameters)
         {

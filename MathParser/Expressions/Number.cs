@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace EgorLucky.MathParser.Expressions
 {
-    public class Number : IExpression
+    public record Number : IExpression
     {
         public string Name => nameof(Number);
-        public double Value { get; set; }
-        public IEnumerable<Variable> Variables { get; set; }
+        public double Value { get; init; }
+        public IEnumerable<Variable> Variables { get; init; }
         public double ComputeValue(ICollection<Parameter> variables)
         {
             return Value;
